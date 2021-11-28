@@ -1,0 +1,7 @@
+Exo 1:
+- 500ms = 500000us.
+- Un seul signal est pris en compte à la sortie de zone masquée car le processus dans sa table des signaux en attentes va n'avoir qu'un seul emplacement par signal et du coup lorsque le bit du signal est levé on ne peut pas le "lever encore plus" à l'arrié d'un autre signal.
+
+Exo 4:
+-Le handler va être interrompu par l'autre handler et va être executé avant de revenir sur ce handler.
+-Solution mettre un masque qui bloque les autres signaux pour chaque handler.
