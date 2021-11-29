@@ -4,7 +4,7 @@ CFLAGS = -Wall -g -pedantic
 
 SRCS := $(wildcard *.c)
 OBJ := $(SRCS:%.c=%.o)
-BINS := exo2-client exo2-serveur
+BINS := exo3-client exo3-serveur
 
 .PHONY: all clean
 .PRECIOUS: %.o
