@@ -107,11 +107,31 @@ int multiplier_par_2(int entier)
 
 int recevoir_message(int id_file, message *message, long type)
 {
-	return msgrcv(id_file, message, sizeof(message), type, 0);
+	return msgrcv(id_file, message, sizeof(struct message) - sizeof(long), type, 0);
 }
 
 int envoyer_message(int id_file, message *message, long type)
 {
 	message->mtype = type;
-	return msgsnd(id_file, message, sizeof(message), 0);
+	return msgsnd(id_file, message, sizeof(struct message) - sizeof(long), 0);
+}
+
+int addition(int a, int b)
+{
+	return a + b;
+}
+
+int soustraction(int a, int b)
+{
+	return a - b;
+}
+
+int multiplication(int a, int b)
+{
+	return a * b;
+}
+
+int division_entiere(int a, int b)
+{
+	return a / b;
 }

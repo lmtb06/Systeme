@@ -13,19 +13,29 @@
 #include <string.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
+#include <string.h>
+#include <limits.h>
 
 #define CHEMIN_CLE "test"
-#define ID_CLE 0
+#define ID_CLE 1
 #define TYPE_SERVEUR 1
 #define TYPE_CLIENT 2
 
+#define ADDITION 1
+#define SOUSTRACTION 2
+#define MULTIPLICATION 3
+#define DIVISION 4
 
 typedef struct message
 {
 	long mtype;
 	pid_t pid_demandeur;
+	int operation;
+	int operande1;
+	int operande2;
 	int valeur;
 } message;
+
 
 /**
  * @brief Ecrit le message et flush dans le flux spécifié ex stdout, stderr, un fichier, etc.
@@ -34,7 +44,8 @@ typedef struct message
  * @param ...arguments variatiques utilisés pour le formatage
  * dans le message comme avec printf.
  */
-void print_flush(FILE *flux, char *message, ...);
+void
+print_flush(FILE *flux, char *message, ...);
 
 /**
  * @brief Ecrit le message avec l'interpretation du code dans errno sur le flux défini et quitte le programme avec le code de retour défini
@@ -121,4 +132,38 @@ int recevoir_message(int id_file, message *message, long type);
  * @return int 0 si succés de l'envoie, -1 sinon
  */
 int envoyer_message(int id_file, message *message, long type);
+
+/**
+ * @brief donne la somme de a et b
+ *
+ * @param a la première opérande
+ * @param b la deuxieme opérande
+ * @return int la somme de a et b
+ */
+int addition(int a, int b);
+/**
+ * @brief donne la soustraction de a par b
+ *
+ * @param a la première opérande
+ * @param b la deuxieme opérande
+ * @return int la soustraction de a par b
+ */
+int soustraction(int a, int b);
+/**
+ * @brief donne la multiplication de a et b
+ *
+ * @param a la première opérande
+ * @param b la deuxieme opérande
+ * @return int la multiplication de a et b
+ */
+int multiplication(int a, int b);
+/**
+ * @brief donne la division entiére de a par b
+ *
+ * @param a la première opérande
+ * @param b la deuxieme opérande
+ * @return int la division entiére de a par b
+ */
+int division_entiere(int a, int b);
+// TODO Mettre à jour les opérations si je trouve un bithack
 #endif
