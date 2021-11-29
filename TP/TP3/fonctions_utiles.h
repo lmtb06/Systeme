@@ -23,6 +23,7 @@
 typedef struct message
 {
 	long mtype;
+	pid_t pid_demandeur;
 	int valeur;
 } message;
 
