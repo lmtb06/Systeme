@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	// Envoie de message au serveur (type client)
 	if (envoyer_message(id_file, &requete, TYPE_CLIENT) == -1)
 	{
-		print_erreur_et_exit(stdout, EXIT_FAILURE, "Client (pid : %d): Erreur lors de l'envoie requete de message", getpid());
+		print_erreur_et_exit(stdout, EXIT_FAILURE, "Client (pid : %d): Erreur lors de l'envoie de la requete", getpid());
 	}
 	else
 	{
