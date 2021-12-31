@@ -21,10 +21,10 @@
 #define TYPE_SERVEUR 1
 #define TYPE_CLIENT 2
 
-#define ADDITION 1
-#define SOUSTRACTION 2
-#define MULTIPLICATION 3
-#define DIVISION 4
+#define ADDITION 4
+#define SOUSTRACTION 3
+#define MULTIPLICATION 2
+#define DIVISION 1
 
 typedef struct message
 {
