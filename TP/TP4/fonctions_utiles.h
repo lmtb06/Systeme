@@ -85,6 +85,15 @@ void exit_si_different(int valeur, int valeur_attendue, FILE *flux, int exit_sta
 pid_t creer_fils_exec(size_t max_essais, unsigned int temps_attente_entre_fork, char *chemin, char *nom, ...);
 
 /**
+ * @brief Crée un fils sans faire de recouvrement
+ *
+ * @param max_essais le nombre maximum d'essais de fork sans succés
+ * @param temps_attente_entre_fork le temps d'attente entre chaque fork non réussi en usecondes
+ * @return pid_t le pid du fils si le recouvrement à réussi et -1 sinon
+ */
+pid_t creer_fils(size_t max_essais, unsigned int temps_attente_entre_fork);
+
+/**
  * @brief Retourne la clé générée à partir de CHEMIN_CLE et ID_CLE
  *
  */

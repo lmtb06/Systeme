@@ -51,14 +51,7 @@ void exit_si_different(int valeur, int valeur_attendue, FILE *flux, int exit_sta
 
 pid_t creer_fils_exec(size_t max_essais, unsigned int temps_attente_entre_fork, char *chemin, char *nom, ...)
 {
-	pid_t pid_fils = fork();
-	// réessaie de fork() si le fork initial n'a pas marché et que le processus n'est pas bloqué
-	for (size_t i = 0; i < max_essais && pid_fils == -1 && errno == EAGAIN; i++)
-	{
-		print_flush(stdout, "Fork non réussi, nouvel essai dans %d seconde(s) \n", temps_attente_entre_fork);
-		usleep(temps_attente_entre_fork);
-		pid_fils = fork();
-	}
+	pid_t pid_fils = creer_fils(max_essais, temps_attente_entre_fork);
 
 	if (pid_fils == 0) // on est dans le processus fils
 	{
@@ -72,6 +65,19 @@ pid_t creer_fils_exec(size_t max_essais, unsigned int temps_attente_entre_fork, 
 		print_erreur_et_exit(stdout, EXIT_FAILURE, "Fils (pid: %d)Recouvrement de %s impossible", getpid(), nom);
 	}
 
+	return pid_fils;
+}
+
+pid_t creer_fils(size_t max_essais, unsigned int temps_attente_entre_fork)
+{
+	pid_t pid_fils = fork();
+	// réessaie de fork() si le fork initial n'a pas marché et que le processus n'est pas bloqué
+	for (size_t i = 0; i < max_essais && pid_fils == -1 && errno == EAGAIN; i++)
+	{
+		print_flush(stdout, "Fork non réussi, nouvel essai dans %d seconde(s) \n", temps_attente_entre_fork);
+		usleep(temps_attente_entre_fork);
+		pid_fils = fork();
+	}
 	return pid_fils;
 }
 
