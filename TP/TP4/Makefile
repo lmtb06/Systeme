@@ -14,7 +14,7 @@ all: $(BINS)
 %.o: %.c
 	@$(CC) -o $*.o $(CFLAGS) -c $*.c
 
-$(BINS): % : %.o fonctions_utiles.o
+$(BINS): % : %.o fonctions_utiles.o mes_semaphores.o
 	@$(CC) -o $* $(CFLAGS) $^
 	@echo "Executable(s) crée : $@"
 

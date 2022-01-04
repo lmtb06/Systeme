@@ -16,8 +16,9 @@
 #include <string.h>
 #include <limits.h>
 #include <sys/shm.h>
+#include <sys/sem.h>
 
-#define CHEMIN_CLE "test"
+#define CHEMIN_CLE "mes_sem"
 #define ID_CLE 1
 #define TYPE_SERVEUR 1
 #define TYPE_CLIENT 2
