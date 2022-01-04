@@ -1,4 +1,5 @@
 #include "fonctions_utiles.h"
+#include "mes_semaphores.h"
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +28,20 @@ int main(int argc, char *argv[])
 	(*pVariablePartagee) = 0;
 
 	/**
+	 * Création de l'ensemble de sémaphore
+	 */
+	int semid;
+	if (sem_creation(&semid, 1) == -1)
+	{
+		print_erreur_et_exit(stdout, EXIT_FAILURE, "Père (pid : %d): Impossible de créer l'ensemble de sémaphore", getpid());
+	}
+
+	/**
+	 * Initialisation de l'ensemble de sémaphore
+	 */
+	sem_initialisation(semid, 0, 1);
+	int NB_INC = 100000;
+	/**
 	 * Création du fils
 	 */
 	pid_t pid_fils = creer_fils(3, 1000);
@@ -38,11 +53,13 @@ int main(int argc, char *argv[])
 	 * Incrementation par 5 par le fils 100000 fois en parallele du fils
 	 * de la même manière que le père.
 	 */
-		for (size_t i = 0; i < 100000; i++)
+		for (size_t i = 0; i < NB_INC; i++)
 		{
+			P(semid, 0);
 			tmp = (*pVariablePartagee);
 			tmp = tmp + 5;
 			(*pVariablePartagee) = tmp;
+			V(semid, 0);
 		}
 	}
 	else if (pid_fils > 0)
@@ -53,11 +70,13 @@ int main(int argc, char *argv[])
 	 * tmp = tmp + 3;
 	 * (*pVariablePartagée) = tmp;
 	 */
-		for (size_t i = 0; i < 100000; i++)
+		for (size_t i = 0; i < NB_INC; i++)
 		{
+			P(semid, 0);
 			tmp = (*pVariablePartagee);
 			tmp = tmp + 3;
 			(*pVariablePartagee) = tmp;
+			V(semid, 0);
 		}
 	}
 	else
@@ -84,6 +103,16 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
+		/**
+		 * Destruction de l'ensemble de sémaphore
+		 */
+		if(sem_destruction(semid) == -1)
+		{
+			print_flush(stdout, "Père (pid : %d): Impossible de supprimer l'ensemble de sémaphores", getpid());
+		}
+		/**
+		 * Suppression du segment de mémoire partagé
+		 */
 		shmctl(mem_id, IPC_RMID, 0);
 		print_flush(stdout, "Père (pid : %d): Au revoir !\n", getpid());
 	}
